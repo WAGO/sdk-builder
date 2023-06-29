@@ -51,15 +51,13 @@ RUN mkdir -p "${BUILD_DIR}" \
   && dumb-init --version
 
 FROM builder as toolchain
-ARG TOOLCHAIN_DIR=/opt/gcc-Toolchain-2022.02
-ARG TOOLCHAIN_URL=https://github.com/WAGO/gcc-toolchain/releases/download/gcc-toolchain-2022.02/gcc-linaro.toolchain-2022.02-arm-linux-gnueabihf.tar.gz
+ARG TOOLCHAIN_DIR=/opt/gcc-Toolchain-2022.08
+ARG TOOLCHAIN_URL=https://github.com/WAGO/gcc-toolchain/releases/download/gcc-toolchain-2022.08/gcc-linaro.toolchain-2022.08-arm-linux-gnueabihf.tar.gz
 RUN mkdir -p "${TOOLCHAIN_DIR}" \
-  && curl -fSL -s -o gcc-linaro.toolchain-2022.02-arm-linux-gnueabihf.tar.gz "${TOOLCHAIN_URL}" \
-  && tar -xf gcc-linaro.toolchain-2022.02-arm-linux-gnueabihf.tar.gz -C "${TOOLCHAIN_DIR}" \
+  && curl -fSL -s -o gcc-linaro.toolchain-2022.08-arm-linux-gnueabihf.tar.gz "${TOOLCHAIN_URL}" \
+  && tar -xf gcc-linaro.toolchain-2022.08-arm-linux-gnueabihf.tar.gz -C "${TOOLCHAIN_DIR}" \
   && rm -rf "${TOOLCHAIN_DIR}/.git" \
     "${TOOLCHAIN_DIR}/arm-linux-gnueabihf/share/doc" \
-    "${TOOLCHAIN_DIR}/arm-linux-gnueabihf/libexec/gcc/arm-linux-gnueabihf/9.2.1/f951" \
-    "${TOOLCHAIN_DIR}/arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gfortran" \
     gcc-linaro.toolchain-2022.02-arm-linux-gnueabihf.tar.gz
 
 FROM builder as ptxdist
@@ -73,7 +71,7 @@ RUN cd /tmp \
 
 FROM builder as image
 
-ARG TOOLCHAIN_DIR=/opt/gcc-Toolchain-2022.02
+ARG TOOLCHAIN_DIR=/opt/gcc-Toolchain-2022.08
 
 COPY --from=dumb_init /usr/local/bin/dumb-init /usr/local/bin/dumb-init
 COPY --from=toolchain "${TOOLCHAIN_DIR}" "${TOOLCHAIN_DIR}"
@@ -90,7 +88,7 @@ RUN rm /usr/local/share/ca-certificates/*
 FROM scratch
 
 LABEL maintainer="WAGO GmbH & Co. KG"
-LABEL version="1.0.0"
+LABEL version="2.0.0"
 LABEL description="SDK Builder"
 
 COPY --from=image / /

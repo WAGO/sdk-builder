@@ -22,6 +22,7 @@ Every FW release is bound to one specific sdk-builder tag. You can look up the c
 sdk-builder release | pfc-sdk | cc100-sdk | tp-sdk
 --------------------|---------|-----------|--------
 1.0.0               | FW-24   | FW-24     | FW-24
+2.0.0               | FW-25   | FW-25     | FW-25
 
 You can downloand specific sdk-builder versions in the release section. Alternatively you may use git to clone the repository.
 
