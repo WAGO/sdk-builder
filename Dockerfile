@@ -51,14 +51,20 @@ RUN mkdir -p "${BUILD_DIR}" \
   && dumb-init --version
 
 FROM builder as toolchain
-ARG TOOLCHAIN_DIR=/opt/gcc-Toolchain-2022.08
-ARG TOOLCHAIN_URL=https://github.com/WAGO/gcc-toolchain/releases/download/gcc-toolchain-2022.08/gcc-linaro.toolchain-2022.08-arm-linux-gnueabihf.tar.gz
+ARG TOOLCHAIN_DIR=/opt/gcc-Toolchain-2022.08-wago.1
+ARG TOOLCHAIN_URL_ARM32=https://github.com/WAGO/gcc-toolchain/releases/download/gcc-toolchain-2022.08-wago.1/gcc-linaro.toolchain-2022.08-wago.1-arm-linux-gnueabihf.tar.gz
+ARG TOOLCHAIN_URL_AARCH64=https://github.com/WAGO/gcc-toolchain/releases/download/gcc-toolchain-2022.08-wago.1/gcc-linaro.toolchain-2022.08-wago.1-aarch64-linux-gnu.tar.gz
 RUN mkdir -p "${TOOLCHAIN_DIR}" \
-  && curl -fSL -s -o gcc-linaro.toolchain-2022.08-arm-linux-gnueabihf.tar.gz "${TOOLCHAIN_URL}" \
-  && tar -xf gcc-linaro.toolchain-2022.08-arm-linux-gnueabihf.tar.gz -C "${TOOLCHAIN_DIR}" \
+  && curl -fSL -s -o gcc-linaro.toolchain-2022.08-wago.1-arm-linux-gnueabihf.tar.gz "${TOOLCHAIN_URL_ARM32}" \
+  && tar -xf gcc-linaro.toolchain-2022.08-wago.1-arm-linux-gnueabihf.tar.gz -C "${TOOLCHAIN_DIR}" \
   && rm -rf "${TOOLCHAIN_DIR}/.git" \
     "${TOOLCHAIN_DIR}/arm-linux-gnueabihf/share/doc" \
-    gcc-linaro.toolchain-2022.02-arm-linux-gnueabihf.tar.gz
+    gcc-linaro.toolchain-2022.08-wago.1-arm-linux-gnueabihf.tar.gz \
+  && curl -fSL -s -o gcc-linaro.toolchain-2022.08-wago.1-aarch64-linux-gnu.tar.gz "${TOOLCHAIN_URL_AARCH64}" \
+  && tar -xf gcc-linaro.toolchain-2022.08-wago.1-aarch64-linux-gnu.tar.gz -C "${TOOLCHAIN_DIR}" \
+  && rm -rf "${TOOLCHAIN_DIR}/.git" \
+    "${TOOLCHAIN_DIR}/aarch64-linux-gnu/share/doc" \
+    gcc-linaro.toolchain-2022.08-wago.1-aarch64-linux-gnu.tar.gz
 
 FROM builder as ptxdist
 ARG PTXDIST_URL=https://github.com/WAGO/ptxdist/archive/refs/tags/Update-2020.08.0.tar.gz
@@ -71,7 +77,7 @@ RUN cd /tmp \
 
 FROM builder as image
 
-ARG TOOLCHAIN_DIR=/opt/gcc-Toolchain-2022.08
+ARG TOOLCHAIN_DIR=/opt/gcc-Toolchain-2022.08-wago.1
 
 COPY --from=dumb_init /usr/local/bin/dumb-init /usr/local/bin/dumb-init
 COPY --from=toolchain "${TOOLCHAIN_DIR}" "${TOOLCHAIN_DIR}"
@@ -88,7 +94,7 @@ RUN rm /usr/local/share/ca-certificates/*
 FROM scratch
 
 LABEL maintainer="WAGO GmbH & Co. KG"
-LABEL version="2.0.0"
+LABEL version="3.0.0"
 LABEL description="SDK Builder"
 
 COPY --from=image / /

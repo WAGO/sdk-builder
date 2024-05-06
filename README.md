@@ -1,5 +1,5 @@
 # sdk-builder
-This Repository contains the Dockerfile for the sdk-builder. The sdk-builder is used as base image for all product sdks (PFC, CC100 & VTP/CTP).
+This Repository contains the Dockerfile for the sdk-builder. The sdk-builder is used as base image for all product sdks (PFC200, PFC300, CC100 & VTP/CTP).
 If you prefer to use a virtual machine feel free to use the Dockfile as guideline for the installation process. 
 
 ## PREREQUISITES
@@ -19,10 +19,46 @@ Make sure that you install GIT version >= 1.8.2
 
 Every FW release is bound to one specific sdk-builder tag. You can look up the corresponding value in the table below.
 
-sdk-builder release | pfc-sdk | cc100-sdk | tp-sdk
---------------------|---------|-----------|--------
-1.0.0               | FW-24   | FW-24     | FW-24
-2.0.0               | FW-25   | FW-25     | FW-25
+<table>
+    <thead>
+        <tr>
+            <th>sdk-builder release</th>
+            <th>pfc200-sdk</th>
+            <th>cc100-sdk</th>
+            <th>tp-sdk</th>
+            <th>pfc300-sdk</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=1>1.0.0</td>
+            <td rowspan=1>FW-24</td>
+            <td rowspan=1>FW-24</td>
+            <td rowspan=1>FW-24</td>
+            <td rowspan=1>-</td>
+        </tr>
+        <tr>
+            <td rowspan=2>2.0.0</td>
+            <td rowspan=1>FW-25</td>
+            <td rowspan=1>FW-25</td>
+            <td rowspan=1>FW-25</td>
+            <td rowspan=1>-</td>
+        </tr>
+        <tr>
+            <td rowspan=1>FW-26</td>
+            <td rowspan=1>FW-26</td>
+            <td rowspan=1>FW-26</td>
+            <td rowspan=1>-</td>
+        </tr>
+        <tr>
+            <td rowspan=1>3.0.0</td>
+            <td rowspan=1>FW-27</td>
+            <td rowspan=1>FW-27</td>
+            <td rowspan=1>FW-27</td>
+            <td rowspan=1>FW-27</td>
+        </tr>
+    </tbody>
+</table>
 
 You can downloand specific sdk-builder versions in the release section. Alternatively you may use git to clone the repository.
 
