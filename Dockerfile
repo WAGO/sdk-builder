@@ -2,7 +2,6 @@ ARG REGISTRY_PREFIX=''
 ARG CODENAME='focal'
 
 
-
 FROM ${REGISTRY_PREFIX}ubuntu:${CODENAME} as builder
 COPY certs/* /usr/local/share/ca-certificates/
 RUN apt update \
@@ -10,6 +9,7 @@ RUN apt update \
         build-essential \
         curl \
         libncurses5-dev \
+        libncurses5w-dev \
         wget \
         gawk \
         flex \
@@ -94,7 +94,7 @@ RUN rm /usr/local/share/ca-certificates/*
 FROM scratch
 
 LABEL maintainer="WAGO GmbH & Co. KG"
-LABEL version="3.0.0"
+LABEL version="3.0.1"
 LABEL description="SDK Builder"
 
 COPY --from=image / /
