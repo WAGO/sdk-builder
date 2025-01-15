@@ -9,7 +9,7 @@ RUN apt update \
         build-essential \
         curl \
         libncurses5-dev \
-        libncurses5w-dev \
+        libncursesw5-dev \
         wget \
         gawk \
         flex \
