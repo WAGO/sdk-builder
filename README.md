@@ -73,6 +73,14 @@ Every FW release is bound to one specific sdk-builder tag. You can look up the c
             <td rowspan=1>FW-28</td>
 	        <td rowspan=1>FW-28</td>
         </tr>
+        <tr>
+            <td rowspan=1>4.0.0</td>
+            <td rowspan=1>FW-30</td>
+            <td rowspan=1>-</td>
+            <td rowspan=1>-</td>
+            <td rowspan=1>-</td>
+	        <td rowspan=1>-</td>
+        </tr>
         </tr>
     </tbody>
 </table>

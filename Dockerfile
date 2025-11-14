@@ -94,7 +94,7 @@ RUN rm /usr/local/share/ca-certificates/*
 FROM scratch
 
 LABEL maintainer="WAGO GmbH & Co. KG"
-LABEL version="3.0.1"
+LABEL version="4.0.0"
 LABEL description="SDK Builder"
 
 COPY --from=image / /
