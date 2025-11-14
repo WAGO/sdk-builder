@@ -19,14 +19,19 @@ RUN apt update \
         gawk \
         gettext \
         groff \
+        kmod \
         libc6-dev \
+        libgmp-dev \
+        libmpc-dev \
         libncurses5-dev \
         libncursesw5-dev \
+        libparse-yapp-perl \
         libtool \
         lzop \
         pkg-config \
         python-dev \
         python3-setuptools \
+        python3-venv \
         rsync \
         software-properties-common \
         texinfo \
