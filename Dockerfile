@@ -2,7 +2,7 @@ ARG REGISTRY_PREFIX=''
 ARG CODENAME='focal'
 
 
-FROM ${REGISTRY_PREFIX}ubuntu:${CODENAME} as builder
+FROM ${REGISTRY_PREFIX}ubuntu:${CODENAME} AS builder
 COPY certs/* /usr/local/share/ca-certificates/
 RUN apt update \
     && DEBIAN_FRONTEND=noninteractive TZ="Europe/Berlin" apt install -y --no-install-recommends \
@@ -37,7 +37,7 @@ RUN apt update \
         unzip \
         pkg-config
 
-FROM builder as dumb_init
+FROM builder AS dumb_init
 ARG BUILD_DIR=/tmp/build
 ARG DUMB_INIT_VERSION=1.2.5
 RUN mkdir -p "${BUILD_DIR}" \
@@ -50,7 +50,7 @@ RUN mkdir -p "${BUILD_DIR}" \
   && mv dumb-init /usr/local/bin/dumb-init \
   && dumb-init --version
 
-FROM builder as toolchain
+FROM builder AS toolchain
 ARG TOOLCHAIN_DIR=/opt/gcc-Toolchain-2022.08-wago.1
 ARG TOOLCHAIN_URL_ARM32=https://github.com/WAGO/gcc-toolchain/releases/download/gcc-toolchain-2022.08-wago.1/gcc-linaro.toolchain-2022.08-wago.1-arm-linux-gnueabihf.tar.gz
 ARG TOOLCHAIN_URL_AARCH64=https://github.com/WAGO/gcc-toolchain/releases/download/gcc-toolchain-2022.08-wago.1/gcc-linaro.toolchain-2022.08-wago.1-aarch64-linux-gnu.tar.gz
@@ -66,7 +66,7 @@ RUN mkdir -p "${TOOLCHAIN_DIR}" \
     "${TOOLCHAIN_DIR}/aarch64-linux-gnu/share/doc" \
     gcc-linaro.toolchain-2022.08-wago.1-aarch64-linux-gnu.tar.gz
 
-FROM builder as ptxdist
+FROM builder AS ptxdist
 ARG PTXDIST_URL=https://github.com/WAGO/ptxdist/archive/refs/tags/Update-2020.08.0.tar.gz
 RUN cd /tmp \
   && curl -fSL -s -o ptxdist.tar.xz "${PTXDIST_URL}" \
@@ -75,7 +75,7 @@ RUN cd /tmp \
   && ./configure \
   && make
 
-FROM builder as image
+FROM builder AS image
 
 ARG TOOLCHAIN_DIR=/opt/gcc-Toolchain-2022.08-wago.1
 
