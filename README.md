@@ -40,7 +40,7 @@ Every FW release is bound to one specific sdk-builder tag. You can look up the c
             <td rowspan=1>FW-24</td>
             <td rowspan=1>FW-24</td>
             <td rowspan=1>-</td>
-	    <td rowspan=1>-</td>
+	        <td rowspan=1>-</td>
         </tr>
         <tr>
             <td rowspan=2>2.0.0</td>
@@ -48,14 +48,14 @@ Every FW release is bound to one specific sdk-builder tag. You can look up the c
             <td rowspan=1>FW-25</td>
             <td rowspan=1>FW-25</td>
             <td rowspan=1>-</td>
-	    <td rowspan=1>-</td>
+	        <td rowspan=1>-</td>
         </tr>
         <tr>
             <td rowspan=1>FW-26</td>
             <td rowspan=1>FW-26</td>
             <td rowspan=1>FW-26</td>
             <td rowspan=1>-</td>
-	    <td rowspan=1>-</td>
+	        <td rowspan=1>-</td>
         </tr>
         <tr>
             <td rowspan=1>3.0.0</td>
@@ -63,7 +63,7 @@ Every FW release is bound to one specific sdk-builder tag. You can look up the c
             <td rowspan=1>FW-27</td>
             <td rowspan=1>FW-27</td>
             <td rowspan=1>FW-27</td>
-	    <td rowspan=1>-</td>
+	        <td rowspan=1>-</td>
         </tr>
         <tr>
             <td rowspan=1>3.0.1</td>
@@ -71,7 +71,7 @@ Every FW release is bound to one specific sdk-builder tag. You can look up the c
             <td rowspan=1>FW-28</td>
             <td rowspan=1>FW-28</td>
             <td rowspan=1>FW-28</td>
-	    <td rowspan=1>FW-28</td>
+	        <td rowspan=1>FW-28</td>
         </tr>
         </tr>
     </tbody>
