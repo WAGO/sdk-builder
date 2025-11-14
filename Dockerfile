@@ -6,36 +6,36 @@ FROM ${REGISTRY_PREFIX}ubuntu:${CODENAME} AS builder
 COPY certs/* /usr/local/share/ca-certificates/
 RUN apt update \
     && DEBIAN_FRONTEND=noninteractive TZ="Europe/Berlin" apt install -y --no-install-recommends \
+        autoconf \
+        autopoint \
+        bc \
+        bison \
         build-essential \
         curl \
+        dialog \
+        doxygen \
+        flex \
+        g++ \
+        gawk \
+        gettext \
+        groff \
+        libc6-dev \
         libncurses5-dev \
         libncursesw5-dev \
-        wget \
-        gawk \
-        flex \
-        bison \
-        texinfo \
+        libtool \
+        lzop \
+        pkg-config \
         python-dev \
         python3-setuptools \
-        g++ \
-        dialog \
-        lzop \
-        libc6-dev \
-        autoconf \
-        libtool \
+        rsync \
+        software-properties-common \
+        texinfo \
+        unzip \
+        vim \
+        wget \
         xmlstarlet \
         xsltproc \
-        doxygen \
-        autopoint \
-        gettext \
-        rsync \
-        vim \
-        software-properties-common \
-        bc \
-        groff \
-        zip \
-        unzip \
-        pkg-config
+        zip
 
 FROM builder AS dumb_init
 ARG BUILD_DIR=/tmp/build
