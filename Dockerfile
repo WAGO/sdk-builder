@@ -67,13 +67,15 @@ RUN mkdir -p "${TOOLCHAIN_DIR}" \
     gcc-linaro.toolchain-2022.08-wago.1-aarch64-linux-gnu.tar.gz
 
 FROM builder AS ptxdist
-ARG PTXDIST_URL=https://github.com/WAGO/ptxdist/archive/refs/tags/Update-2020.08.0.tar.gz
+ARG PTXDIST_TAG=Update-2024.12.0
+ARG PTXDIST_URL=https://github.com/WAGO/ptxdist/archive/refs/tags/${PTXDIST_TAG}.tar.gz
 RUN cd /tmp \
   && curl -fSL -s -o ptxdist.tar.xz "${PTXDIST_URL}" \
   && tar -xf ptxdist.tar.xz \
-  && cd ptxdist-Update-2020.08.0 \
+  && mv "ptxdist-${PTXDIST_TAG}" ptxdist-source \
+  && cd /tmp/ptxdist-source \
   && ./configure \
-  && make
+  && make -j
 
 FROM builder AS image
 
@@ -82,11 +84,11 @@ ARG TOOLCHAIN_DIR=/opt/gcc-Toolchain-2022.08-wago.1
 COPY --from=dumb_init /usr/local/bin/dumb-init /usr/local/bin/dumb-init
 COPY --from=toolchain "${TOOLCHAIN_DIR}" "${TOOLCHAIN_DIR}"
 
-COPY --from=ptxdist /tmp/ptxdist-Update-2020.08.0 /tmp/ptxdist-Update-2020.08.0
-RUN cd /tmp/ptxdist-Update-2020.08.0 \
+COPY --from=ptxdist /tmp/ptxdist-source /tmp/ptxdist-source
+RUN cd /tmp/ptxdist-source \
   && make install \
   && cd - \
-  && rm -rf /tmp/ptxdist-Update-2020.08.0
+  && rm -rf /tmp/ptxdist-source
 
 RUN mkdir -p /home/user/ptxproj
 RUN rm /usr/local/share/ca-certificates/*
