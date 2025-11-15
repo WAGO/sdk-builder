@@ -2,42 +2,47 @@ ARG REGISTRY_PREFIX=''
 ARG CODENAME='focal'
 
 
-FROM ${REGISTRY_PREFIX}ubuntu:${CODENAME} as builder
+FROM ${REGISTRY_PREFIX}ubuntu:${CODENAME} AS builder
 COPY certs/* /usr/local/share/ca-certificates/
 RUN apt update \
     && DEBIAN_FRONTEND=noninteractive TZ="Europe/Berlin" apt install -y --no-install-recommends \
+        autoconf \
+        autopoint \
+        bc \
+        bison \
         build-essential \
         curl \
+        dialog \
+        doxygen \
+        flex \
+        g++ \
+        gawk \
+        gettext \
+        groff \
+        kmod \
+        libc6-dev \
+        libgmp-dev \
+        libmpc-dev \
         libncurses5-dev \
         libncursesw5-dev \
-        wget \
-        gawk \
-        flex \
-        bison \
-        texinfo \
+        libparse-yapp-perl \
+        libtool \
+        lzop \
+        pkg-config \
         python-dev \
         python3-setuptools \
-        g++ \
-        dialog \
-        lzop \
-        libc6-dev \
-        autoconf \
-        libtool \
+        python3-venv \
+        rsync \
+        software-properties-common \
+        texinfo \
+        unzip \
+        vim \
+        wget \
         xmlstarlet \
         xsltproc \
-        doxygen \
-        autopoint \
-        gettext \
-        rsync \
-        vim \
-        software-properties-common \
-        bc \
-        groff \
-        zip \
-        unzip \
-        pkg-config
+        zip
 
-FROM builder as dumb_init
+FROM builder AS dumb_init
 ARG BUILD_DIR=/tmp/build
 ARG DUMB_INIT_VERSION=1.2.5
 RUN mkdir -p "${BUILD_DIR}" \
@@ -50,7 +55,7 @@ RUN mkdir -p "${BUILD_DIR}" \
   && mv dumb-init /usr/local/bin/dumb-init \
   && dumb-init --version
 
-FROM builder as toolchain
+FROM builder AS toolchain
 ARG TOOLCHAIN_DIR=/opt/gcc-Toolchain-2022.08-wago.1
 ARG TOOLCHAIN_URL_ARM32=https://github.com/WAGO/gcc-toolchain/releases/download/gcc-toolchain-2022.08-wago.1/gcc-linaro.toolchain-2022.08-wago.1-arm-linux-gnueabihf.tar.gz
 ARG TOOLCHAIN_URL_AARCH64=https://github.com/WAGO/gcc-toolchain/releases/download/gcc-toolchain-2022.08-wago.1/gcc-linaro.toolchain-2022.08-wago.1-aarch64-linux-gnu.tar.gz
@@ -66,27 +71,29 @@ RUN mkdir -p "${TOOLCHAIN_DIR}" \
     "${TOOLCHAIN_DIR}/aarch64-linux-gnu/share/doc" \
     gcc-linaro.toolchain-2022.08-wago.1-aarch64-linux-gnu.tar.gz
 
-FROM builder as ptxdist
-ARG PTXDIST_URL=https://github.com/WAGO/ptxdist/archive/refs/tags/Update-2020.08.0.tar.gz
+FROM builder AS ptxdist
+ARG PTXDIST_TAG=Update-2024.12.0
+ARG PTXDIST_URL=https://github.com/WAGO/ptxdist/archive/refs/tags/${PTXDIST_TAG}.tar.gz
 RUN cd /tmp \
   && curl -fSL -s -o ptxdist.tar.xz "${PTXDIST_URL}" \
   && tar -xf ptxdist.tar.xz \
-  && cd ptxdist-Update-2020.08.0 \
+  && mv "ptxdist-${PTXDIST_TAG}" ptxdist-source \
+  && cd /tmp/ptxdist-source \
   && ./configure \
-  && make
+  && make -j
 
-FROM builder as image
+FROM builder AS image
 
 ARG TOOLCHAIN_DIR=/opt/gcc-Toolchain-2022.08-wago.1
 
 COPY --from=dumb_init /usr/local/bin/dumb-init /usr/local/bin/dumb-init
 COPY --from=toolchain "${TOOLCHAIN_DIR}" "${TOOLCHAIN_DIR}"
 
-COPY --from=ptxdist /tmp/ptxdist-Update-2020.08.0 /tmp/ptxdist-Update-2020.08.0
-RUN cd /tmp/ptxdist-Update-2020.08.0 \
+COPY --from=ptxdist /tmp/ptxdist-source /tmp/ptxdist-source
+RUN cd /tmp/ptxdist-source \
   && make install \
   && cd - \
-  && rm -rf /tmp/ptxdist-Update-2020.08.0
+  && rm -rf /tmp/ptxdist-source
 
 RUN mkdir -p /home/user/ptxproj
 RUN rm /usr/local/share/ca-certificates/*
@@ -94,7 +101,7 @@ RUN rm /usr/local/share/ca-certificates/*
 FROM scratch
 
 LABEL maintainer="WAGO GmbH & Co. KG"
-LABEL version="3.0.1"
+LABEL version="4.0.0"
 LABEL description="SDK Builder"
 
 COPY --from=image / /
